@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cors());
 
 // main route
-app.use("/api/users", UserRoutes)
+app.use("/api/users", UserRoutes);
 
 const getController = (req: Request, res: Response) => {
   res.send('Hello assignment!')

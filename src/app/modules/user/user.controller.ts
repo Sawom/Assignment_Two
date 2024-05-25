@@ -1,3 +1,4 @@
+import { User } from "./user.interface";
 import { Request, Response } from "express";
 import { UserService } from "./user.service";
 
@@ -25,7 +26,7 @@ const createUser = async(req: Request, res:Response) =>{
             }
         })
     }
-    
+
 }
 
 export const UserController ={
