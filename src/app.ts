@@ -7,8 +7,13 @@ const port = 3000;
 app.use(express.json());
 app.use(cors());
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!')
+// main route
+app.use("/api/users")
+
+const getController = app.get('/', (req: Request, res: Response) => {
+  res.send('Hello assignment!')
 })
+
+app.get("/", getController);
 
 export default app;
