@@ -66,11 +66,13 @@ const getSingleUser = async(req: Request, res:Response) =>{
     try{
         const {userId} = req.params;
         const result = await UserService.getSingleUserFromDB(userId);
+        
         res.status(200).json({
             success:true,
             message:  "User fetched successfully!",
             data: result,
         })
+
     }
 
     catch (error: any){
@@ -88,8 +90,39 @@ const getSingleUser = async(req: Request, res:Response) =>{
 
 }
 
+// update single user
+const updateUser = async(req: Request, res:Response) =>{
+    try{
+        const user = req.body;
+        const {userId} = req.params;
+        const result = await UserService.updateUserFromDB(userId, user);
+
+        res.status(200).json({
+            success:true,
+            message:  "User fetched successfully!",
+            data: result,
+        })
+
+    }
+
+    catch (error: any){
+
+        res.status(500).json({
+            success: false,
+            message: error.message || "User not found",
+            error:{
+                code: error.code || 500,
+                description: error.message || "User not Found",
+            }
+        })
+
+    }
+
+}
+
 export const UserController ={
     createUser,
     getAllUsers,
     getSingleUser,
+    updateUser,
 }
