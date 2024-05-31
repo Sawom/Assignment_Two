@@ -3,10 +3,13 @@ import { UserController } from "./user.controller";
 
 const router = express.Router();
 
-// create user
+// create a new user
 router.post("/", UserController.createUser);
 
-// get user
+// get a list of all users
 router.get('/', UserController.getAllUsers);
+
+//  Retrieve a specific user by ID
+router.get('/:userId', UserController.getSingleUser);
 
 export const UserRoutes = router;
