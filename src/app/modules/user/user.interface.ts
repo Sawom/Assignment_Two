@@ -1,3 +1,5 @@
+import { Model } from "mongoose";
+
 export type FullName = {
     firstName: string;
     lastName: string;
@@ -28,6 +30,10 @@ export type User = {
     orders: Orders[];
 }
 
+// custom instance method
 export type UserInstanceMethod = {
     isUserExists(id: String) : Promise<User | null>;
 }
+
+// create instance model
+export type UserInstanceModel = Model<User, Record<string, never>, UserInstanceMethod >

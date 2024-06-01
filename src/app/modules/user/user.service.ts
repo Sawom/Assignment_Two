@@ -3,8 +3,13 @@ import { Orders, User } from "./user.interface";
 
 // create a new user into db
 const createUserIntoDB = async (userData: User) => {
+  // instance
+  const userInstance = new UserModel(userData.userId)
+  if( await userInstance.isUserExists(userInstance.id) ){
+     throw new Error("user has already existed");
+  }
+
   const user = await UserModel.create(userData);
-  // const result = await user.save();
   return user;
 };
 
@@ -28,20 +33,15 @@ const updateUserFromDB = async (id: string, userData: User) => {
 };
 
 // add orders
-const addOrdersToDB = async(id: String, orderData: Orders) =>{
-  const userId = Number(id);
-
-  if( !(await UserModel?.isUserExists(userId) ) ){
-
+const addOrdersToDB = async(id: String, orderData: Orders[] ) =>{
+  const userInstance = new UserModel(orderData)
+  if( await userInstance.isUserExists(userInstance.id) ){
+     throw new Error("user do not exist");
   }
 
-
-
+  const result = await userInstance.save()
+  return result;
 }
-
-
-
-
 
 export const UserService = {
   createUserIntoDB,
