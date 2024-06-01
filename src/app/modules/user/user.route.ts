@@ -13,6 +13,9 @@ router.get('/', UserController.getAllUsers);
 router.get('/:userId', UserController.getSingleUser);
 
 // update a single user
-router.put('/:userId', UserController.updateUser)
+router.put('/:userId', UserController.updateUser);
+
+// add order
+router.put('/:userId/orders', UserController.addOrder);
 
 export const UserRoutes = router;

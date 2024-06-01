@@ -120,9 +120,42 @@ const updateUser = async(req: Request, res:Response) =>{
 
 }
 
+// add order
+const addOrder = async(req: Request, res:Response) =>{
+    try{
+        const {productName, price, quantity} = req.body;
+        const {userId} = req.params;
+
+        const result = await UserService.addOrdersToDB(userId, [ {productName, price, quantity} ])
+
+        res.status(200).json({
+            success:true,
+            message:  "Order added successfully!",
+            data: result,
+        })
+
+    }
+
+    catch(error: any){
+
+        res.status(500).json({
+            success: false,
+            message: error.message || "Order not found",
+            error:{
+                code: error.code || 500,
+                description: error.message || "Order not Found",
+            }
+        })
+
+    }
+
+}
+
+
 export const UserController ={
     createUser,
     getAllUsers,
     getSingleUser,
     updateUser,
+    addOrder,
 }
