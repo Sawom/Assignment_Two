@@ -28,6 +28,7 @@ export type User = {
     hobbies: string[];
     address: FullAddress;
     orders?: Orders[];
+    isDeleted: boolean;
 }
 
 // custom instance method
@@ -36,4 +37,4 @@ export type UserInstanceMethod = {
 }
 
 // create instance model
-export type UserInstanceModel = Model<User, Record<string, never>, UserInstanceMethod >
+export type UserInstanceModel = Model<User, Record<string, never>, UserInstanceMethod > ;

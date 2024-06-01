@@ -213,6 +213,32 @@ const getTotalPrice = async(req: Request, res:Response) =>{
 }
 
 
+// delete users
+const deleteUser = async(req: Request, res:Response) =>{
+    try{
+        const {userId} = req.params;
+        const result = await UserService.deleteUserFromDB(userId);
+
+        res.status(200).json({
+            success:true,
+            message:  "User deleted successfully!",
+            data: result,
+        })
+    } 
+
+    catch(error: any){
+        res.status(500).json({
+            success: false,
+            message: error.message || "Total price not found",
+            error:{
+                code: error.code || 500,
+                description: error.message || "Total price not Found",
+            },
+        })
+
+    }
+}
+
 export const UserController ={
     createUser,
     getAllUsers,
@@ -221,4 +247,5 @@ export const UserController ={
     addOrder,
     getOrders,
     getTotalPrice,
+    deleteUser,
 }

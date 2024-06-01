@@ -41,6 +41,7 @@ const userSchema = new Schema<User, UserInstanceMethod , UserInstanceModel>({
     hobbies: [{type: String, required: true}],
     address: {type: fullAddressSchema},
     orders: [{type: orderSchema }],
+    isDeleted:{ type: Boolean, default: false, }
 })
 
 userSchema.methods.isUserExists = async function(id: string) {

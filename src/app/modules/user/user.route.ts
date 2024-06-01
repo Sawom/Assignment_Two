@@ -24,4 +24,7 @@ router.get('/:userId/orders', UserController.getOrders);
 // get total price
 router.get('/:userId/orders/total-price', UserController.getTotalPrice);
 
+// delete user
+router.delete("/:userId", UserController.deleteUser);
+
 export const UserRoutes = router;

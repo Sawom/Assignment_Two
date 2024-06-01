@@ -114,6 +114,20 @@ const getTotalPriceInDB = async(id: string) =>{
 }
 
 
+// delete user
+const deleteUserFromDB = async(id: string) =>{
+  const userIdNo = Number(id);
+
+  // instance
+  const userInstance = new UserModel(userIdNo)
+  if( await userInstance.isUserExists(userInstance.id) ){
+     throw new Error("user do not exist");
+  }
+
+  const result = await UserModel.updateOne({ id }, { isDeleted: true });
+  return result;
+}
+
 export const UserService = {
   createUserIntoDB,
   getAllUsersFromDB,
@@ -122,4 +136,5 @@ export const UserService = {
   addOrdersToDB,
   getOrdersFromDB,
   getTotalPriceInDB,
+  deleteUserFromDB,
 };
