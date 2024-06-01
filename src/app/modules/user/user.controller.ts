@@ -183,8 +183,6 @@ const getOrders = async(req: Request, res:Response) =>{
 
     }
 
-
-
 }
 
 

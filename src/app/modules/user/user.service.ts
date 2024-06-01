@@ -46,7 +46,7 @@ const updateUserFromDB = async (id: string, userData: User) => {
 };
 
 // add orders
-const addOrdersToDB = async(id: String, orderData: Orders[] | null ) =>{
+const addOrdersToDB = async(id: String, orderData: Orders[] ) =>{
   const userId = Number(id);
 
   // instance
@@ -55,8 +55,22 @@ const addOrdersToDB = async(id: String, orderData: Orders[] | null ) =>{
      throw new Error("user do not exist");
   }
 
-  const result = await userInstance.save()
-  return result;
+  const user = await UserModel.findOne({userId: id})
+  if (!user) {
+    throw new Error("User not found")
+  }
+
+  const updatedUser = await UserModel.updateOne(
+    {userId: id},
+    {$push: {orders: {$each: orderData } } },
+  )
+
+  if( updatedUser.modifiedCount == 0 ){
+    throw new Error("Failed to update orders");
+  }
+
+  const updatedUserWithOrders = await UserModel.findOne({ userId: id })
+  return updatedUserWithOrders?.orders || null ;
 }
 
 // get orders
