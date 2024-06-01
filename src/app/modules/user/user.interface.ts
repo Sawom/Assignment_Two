@@ -28,3 +28,6 @@ export type User = {
     orders: Orders[];
 }
 
+export type UserInstanceMethod = {
+    isUserExists(id: String) : Promise<User | null>;
+}

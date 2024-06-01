@@ -21,7 +21,7 @@ const createUser = async(req: Request, res:Response) =>{
 
         res.status(500).json({
             success: false,
-            message: error.message || "No user found",
+            message: error.message || "User not Found",
             error:{
                 code: error.code || 500,
                 description: error.message || "User not Found",
@@ -50,7 +50,7 @@ const getAllUsers = async(req: Request, res:Response) =>{
 
         res.status(500).json({
             success: false,
-            message: error.message || "No user found",
+            message: error.message || "User not Found",
             error:{
                 code: error.code || 500,
                 description: error.message || "User not Found",
@@ -79,7 +79,7 @@ const getSingleUser = async(req: Request, res:Response) =>{
 
         res.status(500).json({
             success: false,
-            message: error.message || "No user found",
+            message: error.message || "User not Found",
             error:{
                 code: error.code || 500,
                 description: error.message || "User not Found",
@@ -99,7 +99,7 @@ const updateUser = async(req: Request, res:Response) =>{
 
         res.status(200).json({
             success:true,
-            message:  "User fetched successfully!",
+            message:  "User updated successfully!",
             data: result,
         })
 
