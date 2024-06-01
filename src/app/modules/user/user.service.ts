@@ -46,7 +46,7 @@ const updateUserFromDB = async (id: string, userData: User) => {
 };
 
 // add orders
-const addOrdersToDB = async(id: String, orderData: Orders[] ) =>{
+const addOrdersToDB = async(id: String, orderData: Orders[] | null ) =>{
   const userId = Number(id);
 
   // instance
@@ -59,10 +59,17 @@ const addOrdersToDB = async(id: String, orderData: Orders[] ) =>{
   return result;
 }
 
+// get orders
+const getOrdersFromDB = async(id: string) =>{
+  const result = await UserModel.findOne({userId: id});
+  return result;
+}
+
 export const UserService = {
   createUserIntoDB,
   getAllUsersFromDB,
   getSingleUserFromDB,
   updateUserFromDB,
   addOrdersToDB,
+  getOrdersFromDB,
 };

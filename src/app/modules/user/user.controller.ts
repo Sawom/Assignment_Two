@@ -151,6 +151,42 @@ const addOrder = async(req: Request, res:Response) =>{
 
 }
 
+// get orders
+const getOrders = async(req: Request, res:Response) =>{
+    try{
+        const {userId} = req.params;
+        const result = await UserService.getOrdersFromDB(userId);
+        
+        if(!result){
+            throw new Error(" Failed to fetch orders")
+        }
+        const orders = result.orders
+
+        res.status(200).json({
+            success:true,
+            message:  "Order got successfully!",
+            data: orders,
+        })
+
+    }
+
+    catch(error: any){
+
+        res.status(500).json({
+            success: false,
+            message: error.message || "Orders not found",
+            error:{
+                code: error.code || 500,
+                description: error.message || "Orders not Found",
+            }
+        })
+
+    }
+
+
+
+}
+
 
 export const UserController ={
     createUser,
@@ -158,4 +194,5 @@ export const UserController ={
     getSingleUser,
     updateUser,
     addOrder,
+    getOrders,
 }

@@ -27,7 +27,7 @@ export type User = {
     isActive: boolean;
     hobbies: string[];
     address: FullAddress;
-    orders: Orders[];
+    orders?: Orders[];
 }
 
 // custom instance method
