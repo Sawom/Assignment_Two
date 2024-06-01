@@ -21,6 +21,12 @@ const getAllUsersFromDB = async () => {
 
 // get single user from db
 const getSingleUserFromDB = async (id: string) => {
+  // instance
+  const userInstance = new UserModel(id)
+  if( await userInstance.isUserExists(id) ){
+     throw new Error("user does not exist!");
+  }
+
   const result = await UserModel.findOne({ id });
   return result;
 };
@@ -28,12 +34,22 @@ const getSingleUserFromDB = async (id: string) => {
 // update user from db
 const updateUserFromDB = async (id: string, userData: User) => {
   const userId = Number(id);
+
+  // instance
+  const userInstance = new UserModel(id)
+  if( await userInstance.isUserExists(id) ){
+     throw new Error("user does not exist!");
+  }
+
   const result = await UserModel.findOneAndUpdate({ userId: id }, userData);
   return result;
 };
 
 // add orders
 const addOrdersToDB = async(id: String, orderData: Orders[] ) =>{
+  const userId = Number(id);
+
+  // instance
   const userInstance = new UserModel(orderData)
   if( await userInstance.isUserExists(userInstance.id) ){
      throw new Error("user do not exist");
@@ -48,4 +64,5 @@ export const UserService = {
   getAllUsersFromDB,
   getSingleUserFromDB,
   updateUserFromDB,
+  addOrdersToDB,
 };
