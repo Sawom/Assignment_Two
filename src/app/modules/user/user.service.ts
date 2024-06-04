@@ -4,13 +4,13 @@ import { Orders, User } from "./user.interface";
 // create a new user into db
 const createUserIntoDB = async (userData: User) => {
   // instance
-  const userInstance = new UserModel(userData.userId)
-  if( await userInstance.isUserExists(userInstance.id) ){
+  const userInstance = new UserModel(userData)
+  if( await userInstance.isUserExists(userInstance.userId) ){
      throw new Error("user has already existed");
   }
 
-  const user = await UserModel.create(userData);
-  return user;
+  const userResult = await userInstance.save();
+  return userResult;
 };
 
 
@@ -22,14 +22,15 @@ const getAllUsersFromDB = async () => {
 
 
 // get single user from db
-const getSingleUserFromDB = async (id: string) => {
+const getSingleUserFromDB = async ( userData: User) => {
+  // const userIdNumber = Number(userId)
   // instance
-  const userInstance = new UserModel(id)
-  if( await userInstance.isUserExists(id) ){
+  const userInstance = new UserModel(userData)
+  if( await userInstance?.isUserExists(userData.userId) ){
      throw new Error("user does not exist!");
   }
 
-  const result = await UserModel.findOne({ id });
+  const result = await UserModel.findOne({ userId: userId});
   return result;
 };
 

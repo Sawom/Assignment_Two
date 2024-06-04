@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import { FullAddress, FullName, Orders, User, UserInstanceMethod, UserInstanceModel } from "./user/user.interface";
+import config from "../config";
 
 const fullNameSchema = new Schema<FullName>({
     firstName:{
@@ -44,8 +45,8 @@ const userSchema = new Schema<User, UserInstanceMethod , UserInstanceModel>({
     isDeleted:{ type: Boolean, default: false, }
 })
 
-userSchema.methods.isUserExists = async function(id: string) {
-    const existingUser = await UserModel.findOne({id});
+userSchema.methods.isUserExists = async function(userId: number) {
+    const existingUser = await UserModel.findOne({userId});
     return existingUser;
 }
 

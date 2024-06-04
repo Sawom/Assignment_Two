@@ -33,7 +33,7 @@ export type User = {
 
 // custom instance method
 export type UserInstanceMethod = {
-    isUserExists(id: String) : Promise<User | null>;
+    isUserExists(userId: number | string) : Promise<User | null>;
 }
 
 // create instance model

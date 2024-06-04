@@ -16,8 +16,9 @@ const createUser = async (req: Request, res: Response) => {
       success: true,
       message: "User Created successfully!",
       data: result,
-    });
-  } catch (error: any) {
+      });
+    } 
+  catch (error: any) {
     res.status(500).json({
       success: false,
       message: error.message || "User not Found",
@@ -56,7 +57,7 @@ const getAllUsers = async (req: Request, res: Response) => {
 const getSingleUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const result = await UserService.getSingleUserFromDB(userId);
+    const result = await UserService.getSingleUserFromDB(userId,);
 
     res.status(200).json({
       success: true,
