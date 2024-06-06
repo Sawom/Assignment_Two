@@ -45,8 +45,8 @@ const userSchema = new Schema<User, UserInstanceMethod , UserInstanceModel>({
     isDeleted:{ type: Boolean, default: false, }
 })
 
-userSchema.methods.isUserExists = async function(userId: number) {
-    const existingUser = await UserModel.findOne({userId});
+userSchema.methods.isUserExists = async function(userId: number | string): Promise<User | null> {
+    const existingUser = await UserModel.findOne({ userId : userId });
     return existingUser;
 }
 

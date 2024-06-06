@@ -4,15 +4,14 @@ import { Orders, User } from "./user.interface";
 // create a new user into db
 const createUserIntoDB = async (userData: User) => {
   // instance
-  const userInstance = new UserModel(userData)
-  if( await userInstance.isUserExists(userInstance.userId) ){
-     throw new Error("user has already existed");
+  const userInstance = new UserModel(userData);
+  if (await userInstance.isUserExists(userInstance.userId)) {
+    throw new Error("user has already existed");
   }
 
   const userResult = await userInstance.save();
   return userResult;
 };
-
 
 // get all users from db
 const getAllUsersFromDB = async () => {
@@ -20,114 +19,108 @@ const getAllUsersFromDB = async () => {
   return result;
 };
 
+// get single user from db****** genjam
+const getSingleUserFromDB = async (userId: string) => {
+  const userIdNumber = Number(userId);
 
-// get single user from db
-const getSingleUserFromDB = async ( userData: User) => {
-  // const userIdNumber = Number(userId)
   // instance
-  const userInstance = new UserModel(userData)
-  if( await userInstance?.isUserExists(userData.userId) ){
-     throw new Error("user does not exist!");
+  const userInstance = new UserModel({ userId: userIdNumber });
+  if (!(await userInstance?.isUserExists(userIdNumber))) {
+    throw new Error("user does not exist!");
   }
 
-  const result = await UserModel.findOne({ userId: userId});
+  const result = await UserModel.findOne({ userId: userIdNumber });
   return result;
 };
-
 
 // update user from db
-const updateUserFromDB = async (id: string, userData: User) => {
-  const userId = Number(id);
+const updateUserFromDB = async (userId: string, userData: User) => {
+  const userIdNumber = Number(userId);
 
   // instance
-  const userInstance = new UserModel(id)
-  if( await userInstance.isUserExists(id) ){
-     throw new Error("user does not exist!");
+  const userInstance = new UserModel({ userId: userIdNumber } );
+  if (  !(await userInstance?.isUserExists(userIdNumber)) ) {
+    throw new Error("user does not exist!");
   }
 
-  const result = await UserModel.findOneAndUpdate({ userId: id }, userData);
+  const result = await UserModel.findOneAndUpdate({ userId: userIdNumber }, userData);
   return result;
 };
 
-
 // add orders
-const addOrdersToDB = async(id: String, orderData: Orders[] ) =>{
+const addOrdersToDB = async (id: String, orderData: Orders[]) => {
   const userId = Number(id);
 
   // instance
-  const userInstance = new UserModel(orderData)
-  if( await userInstance.isUserExists(userInstance.id) ){
-     throw new Error("user do not exist");
+  const userInstance = new UserModel(orderData);
+  if (await userInstance.isUserExists(userInstance.id)) {
+    throw new Error("user do not exist");
   }
 
-  const user = await UserModel.findOne({userId: id})
+  const user = await UserModel.findOne({ userId: id });
   if (!user) {
-    throw new Error("User not found")
+    throw new Error("User not found");
   }
 
   const updatedUser = await UserModel.updateOne(
-    {userId: id},
-    {$push: {orders: {$each: orderData } } },
-  )
+    { userId: id },
+    { $push: { orders: { $each: orderData } } }
+  );
 
-  if( updatedUser.modifiedCount == 0 ){
+  if (updatedUser.modifiedCount == 0) {
     throw new Error("Failed to update orders");
   }
 
-  const updatedUserWithOrders = await UserModel.findOne({ userId: id })
-  return updatedUserWithOrders?.orders || null ;
-}
-
+  const updatedUserWithOrders = await UserModel.findOne({ userId: id });
+  return updatedUserWithOrders?.orders || null;
+};
 
 // get orders
-const getOrdersFromDB = async(id: string) =>{
-  const result = await UserModel.findOne({userId: id});
+const getOrdersFromDB = async (id: string) => {
+  const result = await UserModel.findOne({ userId: id });
   return result;
-}
-
+};
 
 // get total price to db
-const getTotalPriceInDB = async(id: string) =>{
+const getTotalPriceInDB = async (id: string) => {
   const userIdNo = Number(id);
 
   // instance
-  const userInstance = new UserModel(userIdNo)
-  if( await userInstance.isUserExists(userInstance.id) ){
-     throw new Error("user do not exist");
+  const userInstance = new UserModel(userIdNo);
+  if (await userInstance.isUserExists(userInstance.id)) {
+    throw new Error("user do not exist");
   }
 
-  const user = await UserModel.findOne({userId: id})
+  const user = await UserModel.findOne({ userId: id });
   const result = await UserModel.aggregate([
-    {$match :{userId: userIdNo }},
-    {$unwind: "$orders" },
+    { $match: { userId: userIdNo } },
+    { $unwind: "$orders" },
 
     {
-      $group:{
+      $group: {
         _id: "$userId",
-        totalPrice:{
-          $sum: {$multiply: ["$orders.price", "$orders.quantity"] },
+        totalPrice: {
+          $sum: { $multiply: ["$orders.price", "$orders.quantity"] },
         },
       },
     },
-
-  ])
+  ]);
   return result[0]?.totalPrice || 0;
-}
-
+};
 
 // delete user
-const deleteUserFromDB = async(id: string) =>{
+const deleteUserFromDB = async (id: string) => {
   const userIdNo = Number(id);
 
   // instance
-  const userInstance = new UserModel(userIdNo)
-  if( await userInstance.isUserExists(userInstance.id) ){
-     throw new Error("user do not exist");
+  const userInstance = new UserModel(userIdNo);
+  if (await userInstance.isUserExists(userInstance.id)) {
+    throw new Error("user do not exist");
   }
 
   const result = await UserModel.updateOne({ id }, { isDeleted: true });
   return result;
-}
+};
 
 export const UserService = {
   createUserIntoDB,

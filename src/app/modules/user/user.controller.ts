@@ -53,11 +53,11 @@ const getAllUsers = async (req: Request, res: Response) => {
   }
 };
 
-// get single user
+// get single user **********genjam
 const getSingleUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const result = await UserService.getSingleUserFromDB(userId,);
+    const result = await UserService.getSingleUserFromDB(userId);
 
     res.status(200).json({
       success: true,
