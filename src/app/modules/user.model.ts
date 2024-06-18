@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import { FullAddress, FullName, Orders, User, UserInstanceMethod, UserInstanceModel } from "./user/user.interface";
+import bcrypt from "bcrypt";
 import config from "../config";
 
 const fullNameSchema = new Schema<FullName>({
@@ -35,7 +36,8 @@ const userSchema = new Schema<User, UserInstanceMethod , UserInstanceModel>({
     fullname: {type: fullNameSchema, required: true},
     password: {type: String, 
         maxlength: [20, "password can not be more than 20 characters"],
-        required: true},
+        required: [true, "password is required"]
+    },
     age: {type: Number, required: true},
     email: {type: String, unique: true, required: true},
     isActive : {type: Boolean, default: true, required:true},
@@ -44,6 +46,22 @@ const userSchema = new Schema<User, UserInstanceMethod , UserInstanceModel>({
     orders: [{type: orderSchema }],
     isDeleted:{ type: Boolean, default: false, }
 })
+
+
+// password bcrypt
+userSchema.pre('save', async function(next){
+    const user = this;
+    user.password = await bcrypt.hash(
+      user.password,
+      Number(config.bcrypt_salt_rounds)  
+    );
+    next();
+})
+
+userSchema.post('save', function(doc, next){
+    doc.password = '';
+    next();
+} )
 
 userSchema.methods.isUserExists = async function(userId: number | string): Promise<User | null> {
     const existingUser = await UserModel.findOne({ userId : userId });

@@ -53,7 +53,7 @@ const getAllUsers = async (req: Request, res: Response) => {
   }
 };
 
-// get single user **********genjam
+// get single user
 const getSingleUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;

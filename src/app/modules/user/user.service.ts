@@ -19,7 +19,7 @@ const getAllUsersFromDB = async () => {
   return result;
 };
 
-// get single user from db****** genjam
+//** */ get single user from db
 const getSingleUserFromDB = async (userId: string) => {
   const userIdNumber = Number(userId);
 
@@ -33,7 +33,7 @@ const getSingleUserFromDB = async (userId: string) => {
   return result;
 };
 
-// update user from db
+//** */ update user from db
 const updateUserFromDB = async (userId: string, userData: User) => {
   const userIdNumber = Number(userId);
 
@@ -47,7 +47,7 @@ const updateUserFromDB = async (userId: string, userData: User) => {
   return result;
 };
 
-// add orders
+//** */ add orders
 const addOrdersToDB = async (id: String, orderData: Orders[]) => {
   const userId = Number(id);
 
@@ -75,13 +75,13 @@ const addOrdersToDB = async (id: String, orderData: Orders[]) => {
   return updatedUserWithOrders?.orders || null;
 };
 
-// get orders
+//** */ get orders
 const getOrdersFromDB = async (id: string) => {
   const result = await UserModel.findOne({ userId: id });
   return result;
 };
 
-// get total price to db
+//** */ get total price to db
 const getTotalPriceInDB = async (id: string) => {
   const userIdNo = Number(id);
 
@@ -108,7 +108,7 @@ const getTotalPriceInDB = async (id: string) => {
   return result[0]?.totalPrice || 0;
 };
 
-// delete user
+//** */ delete user
 const deleteUserFromDB = async (id: string) => {
   const userIdNo = Number(id);
 
