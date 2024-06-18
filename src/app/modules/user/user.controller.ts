@@ -196,10 +196,10 @@ const deleteUser = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: error.message || "Total price not found",
+      message: error.message || "User deleted successfully!",
       error: {
         code: error.code || 500,
-        description: error.message || "Total price not Found",
+        description: error.message || "User deleted successfully!",
       },
     });
   }
