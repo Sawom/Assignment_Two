@@ -19,7 +19,7 @@ const getAllUsersFromDB = async () => {
   return result;
 };
 
-//** */ get single user from db
+//**  get single user from db
 const getSingleUserFromDB = async (userId: string) => {
   const userIdNumber = Number(userId);
 
@@ -33,7 +33,7 @@ const getSingleUserFromDB = async (userId: string) => {
   return result;
 };
 
-//** */ update user from db
+//**  update user from db
 const updateUserFromDB = async (userId: string, userData: User) => {
   const userIdNumber = Number(userId);
 
@@ -47,23 +47,23 @@ const updateUserFromDB = async (userId: string, userData: User) => {
   return result;
 };
 
-//** */ add orders**
-const addOrdersToDB = async (id: String, orderData: Orders[]) => {
-  const userId = Number(id);
+//**  add orders
+const addOrdersToDB = async (userId: String, orderData: Orders[]) => {
+  const userIdNumber = Number(userId);
 
   // instance
-  const userInstance = new UserModel(orderData);
-  if (await userInstance.isUserExists(userInstance.id)) {
-    throw new Error("user do not exist");
+  const userInstance = new UserModel({ userId: userIdNumber } );
+  if (  !(await userInstance?.isUserExists(userIdNumber)) ) {
+    throw new Error("user does not exist!");
   }
 
-  const user = await UserModel.findOne({ userId: id });
+  const user = await UserModel.findOne({ userId: userIdNumber });
   if (!user) {
     throw new Error("User not found");
   }
 
   const updatedUser = await UserModel.updateOne(
-    { userId: id },
+    { userId: userIdNumber },
     { $push: { orders: { $each: orderData } } }
   );
 
@@ -71,29 +71,37 @@ const addOrdersToDB = async (id: String, orderData: Orders[]) => {
     throw new Error("Failed to update orders");
   }
 
-  const updatedUserWithOrders = await UserModel.findOne({ userId: id });
+  const updatedUserWithOrders = await UserModel.findOne({ userId: userIdNumber });
   return updatedUserWithOrders?.orders || null;
 };
 
-//** */ get orders**
-const getOrdersFromDB = async (id: string) => {
-  const result = await UserModel.findOne({ userId: id });
+//**  get orders
+const getOrdersFromDB = async (userId: string) => {
+  const userIdNumber = Number(userId);
+
+  // instance
+  const userInstance = new UserModel({ userId: userIdNumber } );
+  if ( !(await userInstance?.isUserExists(userIdNumber)) ) {
+    throw new Error("user does not exist!");
+  }
+
+  const result = await UserModel.findOne({ userId: userIdNumber });
   return result;
 };
 
-//** */ get total price to db**
-const getTotalPriceInDB = async (id: string) => {
-  const userIdNo = Number(id);
+//**  get total price to db
+const getTotalPriceInDB = async (userId: string) => {
+  const userIdNumber = Number(userId);
 
   // instance
-  const userInstance = new UserModel(userIdNo);
-  if (await userInstance.isUserExists(userInstance.id)) {
-    throw new Error("user do not exist");
+  const userInstance = new UserModel({ userId: userIdNumber } );
+  if ( !(await userInstance?.isUserExists(userIdNumber)) ) {
+    throw new Error("user does not exist!");
   }
 
-  const user = await UserModel.findOne({ userId: id });
+  const user = await UserModel.findOne({ userId: userIdNumber });
   const result = await UserModel.aggregate([
-    { $match: { userId: userIdNo } },
+    { $match: { userId: userIdNumber } },
     { $unwind: "$orders" },
 
     {
@@ -108,7 +116,7 @@ const getTotalPriceInDB = async (id: string) => {
   return result[0]?.totalPrice || 0;
 };
 
-//** */ delete user
+//**  delete user
 const deleteUserFromDB = async (userId: string) => {
   const userIdNumber = Number(userId);
 
